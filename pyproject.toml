@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "web-project"
+version = "0.1.0"
+description = "FastAPI project"
+readme = "README.md"
+requires-python = ">=3.13.15"
+dependencies = [
+    "fastapi>=0.163.1",
+    "fastapi-cli>=0.0.34",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.3",
+    "uvicorn[standard]>=0.54.0",
+    "python-multipart>=0.0.34",
+    "loguru>=0.8.0",
+    "opentelemetry-api>=1.45.2",
+    "opentelemetry-sdk>=1.45.2",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.2",
+    "sentry-sdk>=2.75.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.17.5",
+    "mypy>=2.4.1",
+]
+testing = [
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "httpx>=0.28.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["web_project*"]
+
+# ─── Ruff (linter + formatter) ──────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long (formatter handles it)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["web_project"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+explicit_package_bases = true
+mypy_path = "src"
+files = ["src/web_project", "tests"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-v --cov=web_project --cov-report=term-missing"
