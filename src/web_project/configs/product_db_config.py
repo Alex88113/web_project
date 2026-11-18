@@ -7,7 +7,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 load_dotenv()
 
 class ProductDBSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', extra='ignore')
+    model_config = SettingsConfigDict(
+        env_file='.env',
+        env_file_encoding='utf-8',
+        extra='ignore'
+    )
 
     PRODUCT_DB_DNS: PostgresDsn
     PSQL_USER: str = Field(min_length=3)
@@ -15,10 +19,10 @@ class ProductDBSettings(BaseSettings):
     PSQL_PORT: int = Field(gt=0)
     PSQL_HOST: str = Field(min_length=4)
 
-    @classmethod
-    def get_psql_password(cls) -> str:
-        return cls.PSQL_PASSWORD.get_secret_value()
+    def get_psql_password(self) -> str:
+        return self.PSQL_PASSWORD.get_secret_value()
 
 @lru_cache(maxsize=1)
 def get_product_settings() -> ProductDBSettings:
     return ProductDBSettings()
+
