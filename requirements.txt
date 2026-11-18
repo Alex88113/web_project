@@ -3,3 +3,7 @@ uvicorn
 pydantic
 pydantic-settings
 loguru
+asyncpg
+sqlalchemy[asyncio]
+prometheus_fastapi_instrumentator
+redis
