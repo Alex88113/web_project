@@ -28,5 +28,3 @@ class ProductCreate(BaseModel):
 
 class Product(ProductCreate):
     id: int = Field(gt=0)
-
-    config = ConfigDict(from_attributes=True)
